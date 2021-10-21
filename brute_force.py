@@ -21,13 +21,13 @@ def read_file(url):
 
 
 def main():
-    wordlist = read_file("C://Users//lucas//Desktop//wordlist.txt")
+    wordlist = read_file("wordlist.txt")
     result = brute_force(wordlist,
                          '$6$.FdDGttw$d/0si3x4ujcbbWIctsbxmqNWrFgrBCjIblzv7aPJWkXxL0Iak9T.wD3pVPGa6qKDW0rhNLXPyzNHMzho.Nkgc1')
     if result != '':
         print(result)
     else:
-        print("senha não encontrada");
+        print("password not found")
 
 
 if __name__ == '__main__':
