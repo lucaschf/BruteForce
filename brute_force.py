@@ -2,6 +2,32 @@ import crypt
 import multiprocessing as mp
 
 
+def main():
+    pool = mp.Pool(mp.cpu_count())
+    wordlist = read_file("wordlist.txt")
+
+    # example
+    # '$6$dlflg0s6vwXmt0Ip$HVmq5nAwAWFdMWfpvHZPbKU1A7y4jadrUn9J5.McKWNChBljVCzcdlenWekibdeegZuQdlYIHTj8Ax12TXKNH/'
+    key = input("Hashed key: ")
+    # tries to break using brute force.
+    result = pool.apply(brute_force, args=(wordlist, key))
+    pool.close()
+
+    if result != '':
+        print(result)
+    else:
+        print("password not found")
+
+
+# reads the file, stores its content in memory and closes it.
+def read_file(url):
+    file = open(url, 'r')
+    content = file.readlines()
+    file.close()
+    return content
+
+
+# tries to break the key by comparing it with every entry in wordlist encrypted.
 def brute_force(wordlist, key):
     try:
         broke = key.split('$')
@@ -12,28 +38,6 @@ def brute_force(wordlist, key):
     except Exception as e:
         print('Invalid input')
         quit()
-
-
-def read_file(url):
-    file = open(url, 'r')
-    content = file.readlines()
-    file.close()
-    return content
-
-
-def main():
-    pool = mp.Pool(mp.cpu_count())
-
-    hash = '$6$dlflg0s6vwXmt0Ip$HVmq5nAwAWFdMWfpvHZPbKU1A7y4jadrUn9J5.McKWNChBljVCzcdlenWekibdeegZuQdlYIHTj8Ax12TXKNH/'
-    wordlist = read_file("wordlist.txt")
-
-    result = pool.apply(brute_force, args=(wordlist, hash))
-    pool.close()
-
-    if result != '':
-        print(result)
-    else:
-        print("password not found")
 
 
 if __name__ == '__main__':
